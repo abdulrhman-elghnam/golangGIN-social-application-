@@ -2,8 +2,8 @@ POST http://127.0.0.1:8090/authentication/signup
 Content-Type: application/json
 
 {
-  "user": "ahmed123",
   "name": "Ahmed",
-  "age": 25,
+  "dob": "2000-05-15",
+  "email": "ahmed@example.com",
   "password": "Password123"
 }

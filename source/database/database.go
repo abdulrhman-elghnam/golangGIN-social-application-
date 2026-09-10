@@ -2,20 +2,40 @@ package database
 
 import (
 	"golang/source/database/model"
+	"golang/source/database/repository"
 	"os"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-func Connection() {
-	
-	db, err := gorm.Open(sqlite.Open(os.Getenv("DATABASE_URI")), &gorm.Config{})
+var UserRepository *repository.BaseRepository[model.User]
+var PostRepository *repository.BaseRepository[model.Post]
+var CommentRepository *repository.BaseRepository[model.Comment]
+
+func Connection() (*gorm.DB, error) {
+	db, err := gorm.Open(
+		sqlite.Open(os.Getenv("DATABASE_URI")),
+		&gorm.Config{},
+	)
+
 	if err != nil {
-		panic("failed to connect database")
+		return nil, err
 	}
 
-	db.AutoMigrate(&model.User{})
-	db.AutoMigrate(&model.Post{})
-	db.AutoMigrate(&model.Comment{})
+	err = db.AutoMigrate(
+		&model.User{},
+		&model.Post{},
+		&model.Comment{},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	UserRepository = repository.NewBaseRepository[model.User](db)
+	PostRepository = repository.NewBaseRepository[model.Post](db)
+	CommentRepository = repository.NewBaseRepository[model.Comment](db)
+
+	return db, nil
 }

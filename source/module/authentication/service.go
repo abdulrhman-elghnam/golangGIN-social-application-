@@ -1,7 +1,36 @@
 package authentication
 
-import "golang/source/module/authentication/dto"
+import (
+	"golang/source/common/structure"
+	"golang/source/database"
+	"golang/source/database/model"
+	"golang/source/module/authentication/dto"
 
-func Signup(data dto.Signup) (string, error) {
-	return "User created successfully", nil
+	"github.com/gin-gonic/gin"
+)
+
+func SignupHandler(ctx *gin.Context) structure.Response {
+	data := ctx.MustGet("body").(*dto.Signup)
+
+	user := model.User{
+		Name:     data.Name,
+		Email:    data.Email,
+		Password: data.Password,
+	}
+
+	err := database.UserRepository.Create(user)
+
+	if err != nil {
+		return structure.Response{
+			Success: false,
+			Error: &structure.ErrorInfo{
+				Message: err.Error(),
+			},
+		}
+	}
+
+	return structure.Response{
+		Success: true,
+		Result: "User created successfully",
+	}
 }

@@ -26,6 +26,7 @@ func main() {
 	database.Connection()
 	router := gin.Default()
 
+
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{os.Getenv("FRONTEND_URL")},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
