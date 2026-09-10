@@ -17,7 +17,7 @@ import (
 	"github.com/joho/godotenv"
 )
 func main() {
-	err := godotenv.Load("environment/.env.development")
+	err := godotenv.Load(".env.development")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
