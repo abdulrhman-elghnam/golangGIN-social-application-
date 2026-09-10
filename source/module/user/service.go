@@ -12,3 +12,4 @@ func GetUser(c *gin.Context) {
 		"message": "welcome from backend server 🚀",
 	})
 }
+
