@@ -1,0 +1,16 @@
+package model
+
+import "time"
+
+type User struct {
+	ID        uint      `gorm:"primaryKey"`
+	Name      string
+	Email     string    `gorm:"uniqueIndex"`
+	Password  string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+
+	Posts    []Post
+	Comments []Comment
+}
+
