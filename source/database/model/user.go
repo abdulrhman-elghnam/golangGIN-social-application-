@@ -3,9 +3,10 @@ package model
 import "time"
 
 type User struct {
-	ID        uint      `gorm:"primaryKey"`
+	ID        uint `gorm:"primaryKey"`
 	Name      string
-	Email     string    `gorm:"uniqueIndex"`
+	Email     string `gorm:"uniqueIndex"`
+	DOB       time.Time
 	Password  string
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -13,4 +14,3 @@ type User struct {
 	Posts    []Post
 	Comments []Comment
 }
-

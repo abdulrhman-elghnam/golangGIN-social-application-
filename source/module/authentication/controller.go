@@ -4,23 +4,33 @@ import (
 	"golang/source/common/middleware/pipe"
 	"golang/source/common/structure"
 	"golang/source/module/authentication/dto"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func RegisterAuthenticationRoutes(rg *gin.RouterGroup) {
-	authenticationRoute := rg.Group("/authentication")
+	AuthenticationRoute := rg.Group("/authentication")
 
-	{
-		authenticationRoute.POST(
+		AuthenticationRoute.POST(
 			"/signup",
 			pipe.Validate(func() any {
 				return &dto.Signup{}
 			}),
 			func(ctx *gin.Context) {
 				result := SignupHandler(ctx)
-				structure.OK(ctx, 201, result)
+				structure.OK(ctx, http.StatusCreated, result)
+			},
+		)	
+
+		AuthenticationRoute.POST(
+			"/login",
+			pipe.Validate(func() any {
+				return &dto.Signup{}
+			}),
+			func(ctx *gin.Context) {
+				result := LoginHandler(ctx)
+				structure.OK(ctx, http.StatusOK, result)
 			},
 		)
-	}
 }
