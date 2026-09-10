@@ -1,0 +1,9 @@
+POST http://127.0.0.1:8090/authentication/signup
+Content-Type: application/json
+
+{
+  "user": "ahmed123",
+  "name": "Ahmed",
+  "age": 25,
+  "password": "Password123"
+}

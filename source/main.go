@@ -10,6 +10,7 @@ import (
 	"golang/source/common/middleware/global"
 	"golang/source/common/structure"
 	"golang/source/database"
+	"golang/source/module/authentication"
 	"golang/source/module/user"
 
 	"github.com/gin-contrib/cors"
@@ -37,7 +38,9 @@ func main() {
 	router.Use(global.ErrorHandler())
 	bootstrap := router.Group("/")
 
+
 	app.RegisterMainRoutes(bootstrap)
+	authentication.RegisterAuthenticationRoutes(bootstrap)
 	user.RegisterUserRoutes(bootstrap)
 
 	router.NoRoute(func(c *gin.Context) {
