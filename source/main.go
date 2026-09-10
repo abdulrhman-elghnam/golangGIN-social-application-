@@ -37,7 +37,6 @@ func main() {
 	router.Use(global.ErrorHandler())
 	bootstrap := router.Group("/")
 
-
 	app.RegisterMainRoutes(bootstrap)
 	user.RegisterUserRoutes(bootstrap)
 
