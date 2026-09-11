@@ -30,11 +30,21 @@ func (r *BaseRepository[T]) FindByID(id uint) (*T, error) {
 	return &data, nil
 }
 
+func (r *BaseRepository[T]) Find(by string, value string) ([]T, error) {
+	var data []T
+
+	err := r.db.
+		Where(by+" = ?", value).
+		Find(&data).
+		Error
+
+	return data, err
+}
+
 func (r *BaseRepository[T]) FindAll() ([]T, error) {
 	var data []T
 
 	err := r.db.Find(&data).Error
-
 	return data, err
 }
 

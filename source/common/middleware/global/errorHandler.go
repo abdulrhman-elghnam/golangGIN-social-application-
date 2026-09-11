@@ -14,7 +14,7 @@ func ErrorHandler() gin.HandlerFunc {
 
       c.JSON(http.StatusInternalServerError, gin.H{
         "success": false,
-        "message": err.Error(),
+        "error": gin.H{"message": err.Error()},
       })
     }
   }

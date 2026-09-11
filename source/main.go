@@ -23,7 +23,12 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	database.Connection()
+	if os.Getenv("TKN_KEY") == "" {
+		log.Fatal("TKN_KEY must be configured")
+	}
+	if _, err := database.Connection(); err != nil {
+		log.Fatal("database connection failed: ", err)
+	}
 	router := gin.Default()
 
 
@@ -48,10 +53,11 @@ func main() {
 		structure.Fail(
 			c,
 			http.StatusNotFound,
-			"NOT_FOUND",
 			"route not found ❌",
 		)
 	})
 
-	router.Run(":" + os.Getenv("PORT"))
+	if err := router.Run(":" + os.Getenv("PORT")); err != nil {
+		log.Fatal(err)
+	}
 }

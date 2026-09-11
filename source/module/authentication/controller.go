@@ -12,25 +12,33 @@ import (
 func RegisterAuthenticationRoutes(rg *gin.RouterGroup) {
 	AuthenticationRoute := rg.Group("/authentication")
 
-		AuthenticationRoute.POST(
-			"/signup",
-			pipe.Validate(func() any {
-				return &dto.Signup{}
-			}),
-			func(ctx *gin.Context) {
-				result := SignupHandler(ctx)
-				structure.OK(ctx, http.StatusCreated, result)
-			},
-		)	
+	AuthenticationRoute.POST(
+		"/signup",
+		pipe.Validate(func() any {
+			return &dto.Signup{}
+		}),
+		func(ctx *gin.Context) {
+			result, err := SignupHandler(ctx)
+			if err != nil {
+				structure.Fail(ctx, err.Status, err.Message)
+				return
+			}
+			structure.OK(ctx, http.StatusCreated, result, "user created successfully")
+		},
+	)
 
-		AuthenticationRoute.POST(
-			"/login",
-			pipe.Validate(func() any {
-				return &dto.Signup{}
-			}),
-			func(ctx *gin.Context) {
-				result := LoginHandler(ctx)
-				structure.OK(ctx, http.StatusOK, result)
-			},
-		)
+	AuthenticationRoute.POST(
+		"/login",
+		pipe.Validate(func() any {
+			return &dto.Login{}
+		}),
+		func(ctx *gin.Context) {
+			result, err := LoginHandler(ctx)
+			if err != nil {
+				structure.Fail(ctx, err.Status, err.Message)
+				return
+			}
+			structure.OK(ctx, http.StatusOK, result, "login successfully")
+		},
+	)
 }

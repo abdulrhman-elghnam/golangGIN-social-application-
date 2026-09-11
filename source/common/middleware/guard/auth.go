@@ -1,6 +1,7 @@
 package guard
 
 import (
+    "fmt"
     "net/http"
     "os"
     "strings"
@@ -22,9 +23,9 @@ func Auth() gin.HandlerFunc {
             return
         }
 
-        parts := strings.Split(authHeader, " ")
+        parts := strings.Fields(authHeader)
 
-        if len(parts) != 2 || parts[0] != "Bearer" {
+        if len(parts) != 2 || !strings.EqualFold(parts[0], "Bearer") {
             c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
                 "message": "Invalid authorization format",
             })
@@ -48,3 +49,36 @@ func Auth() gin.HandlerFunc {
         c.Next()
     }
 }
+
+func UserID(c *gin.Context) (uint, bool) {
+    claims, exists := c.Get("claims")
+    if !exists {
+        return 0, false
+    }
+
+    value, ok := claims.(map[string]interface{})["user_id"]
+    if !ok {
+        return 0, false
+    }
+
+    var id uint
+    switch typed := value.(type) {
+    case float64:
+        id = uint(typed)
+    case float32:
+        id = uint(typed)
+    case int:
+        id = uint(typed)
+    case uint:
+        id = typed
+    default:
+        return 0, false
+    }
+
+    if id == 0 {
+        return 0, false
+    }
+    return id, true
+}
+
+var _ = fmt.Sprint

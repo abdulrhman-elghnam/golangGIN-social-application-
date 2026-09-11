@@ -8,6 +8,6 @@ import (
 func RegisterUserRoutes(rg *gin.RouterGroup) {
 	UserRoute := rg.Group("/user")
 	{
-		UserRoute.GET("/", GetUser)
+		UserRoute.GET("/")
 	}
 }

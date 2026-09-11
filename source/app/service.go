@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func MainController(c *gin.Context) {
-	structure.OK(c, http.StatusOK, gin.H{
-		"message": "welcome from backend server 🚀",
-	})
+func MainController(ctx *gin.Context) {
+	structure.OK(ctx, http.StatusOK ,  map[string]any{
+		"msg": "hi from backend server 🚀",
+	}, "")
 }
